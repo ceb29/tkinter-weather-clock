@@ -3,6 +3,8 @@ import weather
 import time
 
 #code will be cleaned up eventually, right now just I'm just learning
+def get_time_millis():
+    return int(time.time() * 1000)
 
 def main():
     i = 1
@@ -18,15 +20,15 @@ def main():
     temperature_label = tkinter.Label(win, width=25, textvariable = temperature)
     temperature_label.pack()
     delay_time = 10000
-    last_time = int(time.time() * 1000)
+    last_time = get_time_millis()
     win.update()
 
     while True:
-        current_time = int(time.time() * 1000)
+        current_time = int(get_time_millis())
         if current_time - last_time > delay_time:
             i+=1
             temperature.set("temp = " + weather.get_weather() + " lookups = " + str(i))
-            last_time = int(time.time() * 1000)
+            last_time = int(get_time_millis())
         date_time.set(time.ctime())
         win.update()
 
