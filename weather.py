@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 def get_weather():
-    #get the current weather from weather.com using css selectors (inspect element, then copy css selector)
+    #get the current weather from weather.com using css selectors (inspect element, then copy css selector to soup.select)
     url = 'https://weather.com/weather/tenday/l/Navarre+FL?canonicalCityId=d6912362c8a9d47f8e8d740994e137a76af65d4e8e1bcf8d0c6cad35256ca659'
     request_res = requests.get(url)
     soup = BeautifulSoup(request_res.text, 'html.parser')
