@@ -8,5 +8,3 @@ def get_weather():
     soup = BeautifulSoup(request_res.text, 'html.parser')
     temperature = soup.select('#detailIndex0 > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > span:nth-child(1)')[0].text
     return temperature
-
-get_weather()
