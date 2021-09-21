@@ -51,6 +51,7 @@ class Display():
         tk_text.tag_configure("tag_name", justify='center')
         self.insert_text(tk_text, text_string)
         tk_text.tag_add("tag_name", "1.0", "end")
+        tk_text.config(cursor="none")
 
     def update_text(self, tk_text, text_string):
         tk_text.tag_configure("tag_name", justify='center')
