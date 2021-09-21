@@ -7,16 +7,16 @@ class Display():
     def __init__(self):
         self.win = tkinter.Tk()
         self.clock_dict = self.get_clock_dict()
-        self.date_text = tkinter.Text(self.win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=3, width=15)
-        self.time_text = tkinter.Text(self.win, bg="black", bd=0, font="freesansbold, 48", fg="white", height=1, width=15)
-        self.temperature_text = tkinter.Text(self.win, bg="black", bd=0, font="freesansbold, 36", fg="white", height=1, width=15)
-        self.weather_description_text = tkinter.Text(self.win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=1, width=50)
+        self.date_text = tkinter.Text(self.win, bg="black", bd=0, highlightthickness=0, font="freesansbold, 36", fg="white", height=2, width=15)
+        self.time_text = tkinter.Text(self.win, bg="black", bd=0, highlightthickness=0, font="freesansbold, 120", fg="white", height=1, width=15)
+        self.temperature_text = tkinter.Text(self.win, bg="black", bd=0, highlightthickness=0, font="freesansbold, 36", fg="white", height=1, width=15)
+        self.weather_description_text = tkinter.Text(self.win, bg="black", bd=0, highlightthickness=0, font="freesansbold, 24", fg="white", height=3, width=50)
         self.delay_time = 1000 * 60 * 15
         self.last_time = self.get_time_millis()
 
     def setup_win(self):
-        self.win.geometry("550x250")
-        self.win.configure(bg="black")
+        self.win.attributes("-fullscreen", True)
+        self.win.configure(bg="black", cursor="none")
 
     def setup_date_text(self):
         self.setup_text(self.date_text, self.clock_dict["month"] + " " + self.clock_dict["day_date"] + " " + self.clock_dict["year"])
