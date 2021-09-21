@@ -8,9 +8,32 @@ import time
 def get_time_millis():
     return int(time.time()*1000)
 
-def refresh_text(tk_text, text_string):
+def delete_text(tk_text):
     tk_text.delete("1.0", END)
+
+def insert_text(tk_text, text_string):
     tk_text.insert("1.0", text_string)
+
+def refresh_text(tk_text, text_string):
+    delete_text(tk_text)
+    insert_text(tk_text, text_string)
+
+def setup_text(tk_text, text_string):
+    tk_text.tag_configure("tag_name", justify='center')
+    insert_text(tk_text, text_string)
+    tk_text.tag_add("tag_name", "1.0", "end")
+
+def update_text(tk_text, text_string):
+    tk_text.tag_configure("tag_name", justify='center')
+    refresh_text(tk_text, text_string)
+    tk_text.tag_add("tag_name", "1.0", "end")
+
+def get_clock_dict():
+    date_time_string = time.ctime()
+    date_time_list = list(date_time_string.split(" "))
+    clock_dict = {"day_week":date_time_list[0], "month":date_time_list[1], "day_date":date_time_list[2], 
+                  "time":date_time_list[3], "year":date_time_list[4]}
+    return clock_dict
 
 def main():
     #setup window
@@ -18,45 +41,46 @@ def main():
     win.geometry("550x250")
     win.title = "Test"
     win.configure(bg="black")
-    #setup widgets
-    i = 1
+
     #clock text
-    date_time = time.localtime(time.time())
-    print(date_time)
-    date_time_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 24", fg="white", height=2, width=22)
-    date_time_text.insert("1.0", date_time)
-    date_time_text.pack()
+    clock_dict = get_clock_dict()
+    time_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 36", fg="white", height=1, width=15)
+    setup_text(time_text, clock_dict["time"])
+    time_text.pack()
+    date_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=1, width=15)
+    setup_text(date_text, clock_dict["month"] + " " + clock_dict["day_date"] + " " + clock_dict["year"])
+    date_text.pack()
+
     #weather text
-    temperature = "temp = " + weather.get_weather()
-    temperature_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=2, width=10)
-    temperature_text.insert("1.0", temperature)
+    temperature_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 24", fg="white", height=1, width=15)
+    setup_text(temperature_text, " " + weather.get_weather())
     temperature_text.pack()
+
     #number of weather lookups text
-    lookup_amount = "lookups = " + str(i)
-    lookup_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=1, width=10)
-    lookup_text.insert("1.0", lookup_amount)
+    i = 1
+    lookup_text = tkinter.Text(win, bg="black", bd=0, font="freesansbold, 12", fg="white", height=1, width=15)
+    setup_text(lookup_text, "lookups = " + str(i))
     lookup_text.pack()
+
     #variables for delay
-    delay_time = 1000 * 60 #update every minute
+    delay_time = 1000 * 60 * 15 #update every minute
     last_time = get_time_millis()
+
     #start window
     win.update()
 
     #main loop
     while True:
+        #update clock text
+        clock_dict = get_clock_dict()
+        update_text(time_text, clock_dict["time"])
+        update_text(date_text, clock_dict["month"] + " " + clock_dict["day_date"] + " " + clock_dict["year"])
         current_time = int(get_time_millis())
         if current_time - last_time > delay_time:
             i += 1
-            #update temperature text
-            temperature = "temp = " + weather.get_weather()
-            refresh_text(temperature_text, temperature)
-            #update lookup amount text
-            lookup_amount = "lookups = " + str(i)
-            refresh_text(lookup_text, str(i))
+            update_text(temperature_text, " " + weather.get_weather())
+            update_text(lookup_text, "lookups = " + str(i))
             last_time = int(get_time_millis())
-        #update clock text
-        date_time = time.localtime(time.time())
-        refresh_text(date_time_text, date_time)
         win.update()
 
 if __name__ == "__main__":
