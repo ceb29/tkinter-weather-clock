@@ -13,6 +13,7 @@ class Display():
         self.weather_description_text = tkinter.Text(self.win, bg="black", bd=0, highlightthickness=0, font="freesansbold, 24", fg="white", height=3, width=50)
         self.delay_time = 1000 * 60 * 15
         self.last_time = self.get_time_millis()
+        self.weather_update_flag = 0
 
     def setup_win(self):
         self.win.attributes("-fullscreen", True)
@@ -71,6 +72,20 @@ class Display():
             hour -= 12
         return str(hour)
 
+    def update_weather_using_delay(self):
+        current_time = int(self.get_time_millis())
+        if current_time - self.last_time > self.delay_time:
+            self.update_weather()
+            self.last_time = int(self.get_time_millis())
+
+    def update_weather_using_clock(self):
+        if int(self.clock_dict["min"]) % 15 == 0 and self.weather_update_flag == 0:
+            self.update_weather()
+            self.weather_update_flag = 1
+            print("update")
+        elif int(self.clock_dict["min"]) % 15 != 0:
+            self.weather_update_flag = 0
+        
     def get_clock_dict(self):
         date_time_string = time.ctime()
         date_time_list = list(date_time_string.split(" "))
@@ -96,8 +111,6 @@ class Display():
     def update(self):
         self.clock_dict = self.get_clock_dict()
         self.update_date_time()
-        current_time = int(self.get_time_millis())
-        if current_time - self.last_time > self.delay_time:
-            self.update_weather()
-            self.last_time = int(self.get_time_millis())
+        #self.update_weather_using_delay()
+        self.update_weather_using_clock()
         self.win.update()
