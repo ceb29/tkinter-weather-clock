@@ -1,5 +1,7 @@
 import tkinter
 from tkinter.constants import END
+
+import requests
 import weather
 import time
 
@@ -66,10 +68,12 @@ class Display():
     def update_weather(self):
         self.update_text(self.temperature_text, " " + weather.get_temperature())
         self.update_text(self.weather_description_text, weather.get_weather_description())
-
+    
     def twelve_hour_clock(self, hour):
-        if int(hour / 12) > 0:
+        if hour / 12 > 0:
             hour -= 12
+        if hour == 0:
+            hour = 12
         return str(hour)
 
     def update_weather_using_delay(self):
@@ -82,7 +86,6 @@ class Display():
         if int(self.clock_dict["min"]) % 15 == 0 and self.weather_update_flag == 0:
             self.update_weather()
             self.weather_update_flag = 1
-            print("update")
         elif int(self.clock_dict["min"]) % 15 != 0:
             self.weather_update_flag = 0
         
