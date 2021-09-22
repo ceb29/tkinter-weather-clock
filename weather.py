@@ -30,11 +30,9 @@ class Weather():
     def temperature(self):
         if self.internet_status == False:
             return " "
-        temperature = self.selector_text(self.temperature_selector)
-        return temperature
+        return self.selector_text(self.temperature_selector)
 
     def description(self):
         if self.internet_status == False:
             return " "
-        description = self.selector_text(self.phrase_selector) + ". " + self.selector_text(self.precip_selector) + ". "
-        return description
+        return self.selector_text(self.phrase_selector) + ". " + self.selector_text(self.precip_selector) + ". "
