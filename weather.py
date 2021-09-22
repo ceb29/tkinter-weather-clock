@@ -14,7 +14,6 @@ class Weather():
 
     #update soup object
     def update(self):
-        print("1")
         try:
             request_res = requests.get(self.url)
             self.soup = BeautifulSoup(request_res.text, "html.parser")

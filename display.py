@@ -18,7 +18,6 @@ class Display():
         self.weather_update_flag = 0
         self.time_flag = 0
         self.weather_flag = 0
-       #self.time_thread = self.thread_update_date_time()
 
     def setup_win(self):
         self.win.attributes("-fullscreen", True)
@@ -84,34 +83,9 @@ class Display():
         self.weather.update()
         self.update_text(self.temperature_text, " " + self.weather.temperature())
         self.update_text(self.weather_description_text, self.weather.description())
-    
-    def thread_update_date_time(self):
-        time_thread = threading.Thread(target=self.update_date_time)
-        time_thread.start()
-        return time_thread
-
-    def update_time_thread(self):
-        if self.time_flag == 0:
-            self.time_thread = self.thread_update_date_time()
-            self.time_flag = 1
-        elif not self.time_thread.is_alive():
-            self.time_flag = 0
-            print(threading.activeCount())
-
-    def thread_update_weather(self):
-        weather_thread = threading.Thread(target=self.update_weather)
-        weather_thread.start()
-
-    def update_weather_using_delay(self):
-        current_time = int(self.get_time_millis())
-        if current_time - self.last_time > self.delay_time:
-            #self.thread_update_weather()
-            self.update_weather()
-            self.last_time = int(self.get_time_millis())
 
     def update_weather_using_clock(self):
         if int(self.clock_dict["min"]) % 15 == 0 and self.weather_update_flag == 0:
-            #self.thread_update_weather()
             self.update_weather()
             self.weather_update_flag = 1
         elif int(self.clock_dict["min"]) % 15 != 0:
@@ -141,7 +115,5 @@ class Display():
     def update(self):
         self.clock_dict = self.get_clock_dict()
         self.update_date_time()
-        #self.update_time_thread()
-        #self.update_weather_using_delay()
         self.update_weather_using_clock()
         self.win.update()
