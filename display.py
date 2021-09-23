@@ -45,7 +45,7 @@ class Display():
         self.setup_weather_description_text()
 
     def twelve_hour_clock(self, hour):
-        if hour / 12 > 0:
+        if hour > 12:
             hour -= 12
         if hour == 0:
             hour = 12
