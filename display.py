@@ -32,15 +32,14 @@ class Display():
         self.time_text.pack()
 
     def setup_temperature_text(self):
-        self.setup_text(self.temperature_text, " " + self.weather.temperature())
+        self.setup_text(self.temperature_text, " ")
         self.temperature_text.pack()
 
     def setup_weather_description_text(self):
-        self.setup_text(self.weather_description_text, self.weather.description())
+        self.setup_text(self.weather_description_text, " ")
         self.weather_description_text.pack()
     
     def setup_weather(self):
-        self.weather.update()
         self.setup_temperature_text()
         self.setup_weather_description_text()
 
@@ -76,20 +75,17 @@ class Display():
         tk_text.tag_add("tag_name", "1.0", "end")
 
     def update_date_time(self):
+        self.clock_dict = self.get_clock_dict()
         self.update_text(self.date_text, self.clock_dict["month"] + " " + self.clock_dict["day_date"] + " " + self.clock_dict["year"])
         self.update_text(self.time_text, self.clock_dict["hour"] + ":" + self.clock_dict["min"] + ":" + self.clock_dict["sec"])
+        self.win.after(500, self.update_date_time)
 
     def update_weather(self):
         self.weather.update()
         self.update_text(self.temperature_text, " " + self.weather.temperature())
         self.update_text(self.weather_description_text, self.weather.description())
-
-    def update_weather_using_clock(self):
-        if int(self.clock_dict["min"]) % 15 == 0 and self.weather_update_flag == 0:
-            self.update_weather()
-            self.weather_update_flag = 1
-        elif int(self.clock_dict["min"]) % 15 != 0:
-            self.weather_update_flag = 0
+        print("weather")
+        self.win.after(15*60*1000, self.update_weather)
 
     def get_clock_dict(self):
         date_time_string = time.ctime()
@@ -110,10 +106,12 @@ class Display():
         self.setup_date_text()
         self.setup_time_text()
         self.setup_weather()
-        self.win.update()
 
     def update(self):
-        self.clock_dict = self.get_clock_dict()
         self.update_date_time()
-        self.update_weather_using_clock()
-        self.win.update()
+        self.update_weather()
+        
+
+    def run(self):
+        self.update()
+        self.win.mainloop()
