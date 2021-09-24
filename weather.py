@@ -37,7 +37,12 @@ class Weather():
 
     #get text using css selector
     def selector_text(self, soup, selector):
-        return soup.select(selector)[0].text
+        try:
+            selector_text = soup.select(selector)[0].text
+            return selector_text
+        except IndexError as ex:
+            #print(ex)
+            return " "
 
     def temperature(self):
         if self.internet_status == False:
