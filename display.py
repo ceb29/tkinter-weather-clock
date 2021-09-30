@@ -43,6 +43,10 @@ class Display():
         self.setup_temperature_text()
         self.setup_weather_description_text()
 
+    def setup_exit_button(self):
+        exit_button = tkinter.Button(self.win, bg="black", fg="black",  activebackground="black", bd=0, highlightthickness=0, command=self.win.destroy)
+        exit_button.place(x=0,y=0)
+
     def twelve_hour_clock(self, hour):
         if hour > 12:
             hour -= 12
@@ -106,12 +110,12 @@ class Display():
         self.setup_date_text()
         self.setup_time_text()
         self.setup_weather()
+        self.setup_exit_button()
 
     def update(self):
         self.update_date_time()
         self.update_weather()
         
-
     def run(self):
         self.update()
         self.win.mainloop()
