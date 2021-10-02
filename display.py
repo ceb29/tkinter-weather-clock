@@ -88,12 +88,18 @@ class Display():
         self.weather.update()
         self.update_text(self.temperature_text, " " + self.weather.temperature())
         self.update_text(self.weather_description_text, self.weather.description())
-        print("weather")
         self.win.after(15*60*1000, self.update_weather)
+
+    def remove_spaces(self, list):
+        list_copy = list[:]
+        for element in list_copy:
+            if element == "":
+                list.remove(element)
+        return list
 
     def get_clock_dict(self):
         date_time_string = time.ctime()
-        date_time_list = list(date_time_string.split(" "))
+        date_time_list = self.remove_spaces(list(date_time_string.split(" ")))
         time_list = list(date_time_list[3].split(":"))
         clock_dict = {"day_week":date_time_list[0],
                     "month":date_time_list[1], 
